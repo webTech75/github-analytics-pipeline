@@ -1,0 +1,24 @@
+from sqlalchemy import create_engine
+from sqlalchemy.orm import declarative_base
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+engine = create_engine(DATABASE_URL)
+
+Base = declarative_base()
+
+
+def test_connection():
+    try:
+        with engine.connect():
+            print("Database connection successful")
+            Base.metadata.create_all(engine)
+            print("Tables created successfully")
+
+    except Exception as error:
+        print("Database connection failed:")
+        print(error)
